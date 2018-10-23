@@ -1,4 +1,4 @@
-package method_references;
+package com.giggs13.method_references;
 
 import java.io.PrintStream;
 import java.time.LocalDateTime;
