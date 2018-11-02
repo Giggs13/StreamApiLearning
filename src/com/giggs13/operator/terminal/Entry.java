@@ -1,11 +1,9 @@
 package com.giggs13.operator.terminal;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class Entry {
@@ -17,6 +15,13 @@ public class Entry {
         runToArray();
         runReduce();
         runMinAndMax();
+        runFindAny​AndFirst​();
+        runAllMatch​();
+        runAnyMatch​();
+        runNoneMatch();
+        runAverage();
+        runSum();
+        runSummaryStatistics();
     }
 
     static void runForEach​() {
@@ -139,5 +144,96 @@ public class Entry {
         int max = Stream.of(20, 11, 45, 78, 13)
                 .max(Integer::compare).get();
         System.out.println(max);
+    }
+
+    static void runFindAny​AndFirst​() {
+        // Optional findAny​()
+        int anySeq = IntStream.range(4, 65536)
+                .findAny()
+                .getAsInt();
+        System.out.println(anySeq);
+
+        // Optional findFirst​()
+        int firstSeq = IntStream.range(4, 65536)
+                .findFirst()
+                .getAsInt();
+        System.out.println(firstSeq);
+
+        int anyParallel = IntStream.range(4, 65536)
+                .parallel()
+                .findAny()
+                .getAsInt();
+        System.out.println(anyParallel);
+
+        int firstParallel = IntStream.range(4, 65536)
+                .parallel()
+                .findFirst()
+                .getAsInt();
+        System.out.println(firstParallel);
+    }
+
+    static void runAllMatch​() {
+        // boolean allMatch​(Predicate predicate)
+        boolean result1 = Stream.of(1, 2, 3, 4, 5)
+                .allMatch(x -> x <= 7);
+        System.out.println(result1);
+
+        boolean result2 = Stream.of(1, 2, 3, 4, 5)
+                .allMatch(x -> x < 3);
+        System.out.println(result2);
+    }
+
+    static void runAnyMatch​() {
+        // boolean anyMatch​(Predicate predicate)
+        boolean result1 = Stream.of(1, 2, 3, 4, 5)
+                .anyMatch(x -> x == 3);
+        System.out.println(result1);
+
+        boolean result2 = Stream.of(1, 2, 3, 4, 5)
+                .anyMatch(x -> x == 8);
+        System.out.println(result2);
+    }
+
+    static void runNoneMatch() {
+        // boolean noneMatch​(Predicate predicate)
+        boolean result1 = Stream.of(1, 2, 3, 4, 5)
+                .noneMatch(x -> x == 9);
+        System.out.println(result1);
+
+        boolean result2 = Stream.of(1, 2, 3, 4, 5)
+                .noneMatch(x -> x == 3);
+        System.out.println(result2);
+    }
+
+    static void runAverage() {
+        // OptionalDouble average​()
+        double result = IntStream.range(2, 16)
+                .average()
+                .getAsDouble();
+        System.out.println(result);
+    }
+
+    static void runSum() {
+        // sum()
+        int result = IntStream.range(2, 16)
+                .sum();
+        System.out.println(result);
+    }
+
+    static void runSummaryStatistics() {
+        // IntSummaryStatistics summaryStatistics()
+        // LongSummaryStatistics summaryStatistics()
+        LongSummaryStatistics stats = LongStream.range(2, 16)
+                .summaryStatistics();
+        System.out.format("  count: %d%n", stats.getCount());
+        System.out.format("    sum: %d%n", stats.getSum());
+        System.out.format("average: %.1f%n", stats.getAverage());
+        System.out.format("    min: %d%n", stats.getMin());
+        System.out.format("    max: %d%n", stats.getMax());
+
+        LongSummaryStatistics stats1 = LongStream.range(2, 16).collect(LongSummaryStatistics::new,
+                LongSummaryStatistics::accept,
+                LongSummaryStatistics::combine);
+        System.out.println(stats1);
     }
 }
